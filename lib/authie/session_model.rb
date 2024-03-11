@@ -5,7 +5,7 @@ require 'securerandom'
 require 'authie/config'
 
 module Authie
-  class SessionModel < ActiveRecord::Base
+  class SessionModel < Authie.config.session_model_superclass.constantize
     attr_accessor :temporary_token
 
     self.table_name = 'authie_sessions'

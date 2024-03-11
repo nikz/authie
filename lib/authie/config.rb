@@ -9,6 +9,7 @@ module Authie
     attr_accessor :session_token_length
     attr_accessor :extend_session_expiry_on_touch
     attr_accessor :lookup_ip_country_backend
+    attr_accessor :session_model_superclass
 
     def initialize
       @session_inactivity_timeout = 12.hours
@@ -18,6 +19,7 @@ module Authie
       @session_token_length = 64
       @extend_session_expiry_on_touch = false
       @lookup_ip_country_backend = nil
+      @session_model_superclass = "ActiveRecord::Base"
     end
 
     def lookup_ip_country(ip)
