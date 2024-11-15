@@ -17,7 +17,7 @@ module Authie
     scope :for_user, ->(user) { where(user_type: user.class.name, user_id: user.id) }
 
     # Attributes
-    serialize :data, type: Hash
+    serialize :data, type: Hash unless columns_hash['data'].type == :jsonb
 
     before_validation :shorten_strings
     before_create :set_new_token
