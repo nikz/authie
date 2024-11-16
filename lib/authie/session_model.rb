@@ -16,8 +16,20 @@ module Authie
     scope :asc, -> { order(last_activity_at: :desc) }
     scope :for_user, ->(user) { where(user_type: user.class.name, user_id: user.id) }
 
-    # Attributes
-    serialize :data, type: Hash unless columns_hash['data'].type == :jsonb
+    def self.setup_serialization
+      return if instance_variable_defined?('@serialization_setup')
+
+      reset_column_information
+      @serialization_setup = true
+      return if columns_hash['data'].type == :jsonb
+
+      serialize :data, type: Hash
+    end
+
+    # Defer setup until the first model instance is accessed
+    after_initialize do
+      self.class.setup_serialization
+    end
 
     before_validation :shorten_strings
     before_create :set_new_token
